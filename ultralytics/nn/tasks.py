@@ -74,7 +74,10 @@ class BaseModel(nn.Module):
             (torch.Tensor): The last output of the model.
         """
         y, dt = [], []  # outputs
+        self.save.append(1)
         for m in self.model:
+            if isinstance(m, Segment):
+                m.f = [15, 18, 21, 1]
             if m.f != -1:  # if not from previous layer
                 x = y[m.f] if isinstance(m.f, int) else [x if j == -1 else y[j] for j in m.f]  # from earlier layers
             if profile:
